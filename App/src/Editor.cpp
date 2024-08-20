@@ -6,11 +6,14 @@ std::vector<Link> links;
 
 int _nodeId = 1;
 int _linkId = 1;
-
+int node_hovered = 1;
 void RenderColorNodeMain(Node &node)
 {
     ImNodes::BeginNode(node.id);
-
+    if (ImNodes::IsNodeHovered(&node.id))
+    {
+        node_hovered = node.id;
+    }
     ImNodes::BeginNodeTitleBar();
     ImGui::TextUnformatted("Color Node");
     ImNodes::EndNodeTitleBar();
@@ -33,6 +36,19 @@ void RenderEditorMain()
     ImGui::Begin("Node Editor");
 
     ImNodes::BeginNodeEditor();
+    ImGui::Dummy(ImVec2(80.0f, 45.0f));
+
+    // Handle new node creation
+    if (ImGui::Button("Add Color Node"))
+    {
+        Node newNode;
+        newNode.id = _nodeId++;
+        newNode.color = ImVec4(0.5f, 0.5f, 0.5f, 1.0f);
+        newNode.input_attr = newNode.id << 1;
+        newNode.output_attr = newNode.id << 2;
+        nodes.push_back(newNode);
+    }
+    // ImNodes::MiniMap();
 
     // Render all nodes
     for (auto &node : nodes)
@@ -52,17 +68,7 @@ void RenderEditorMain()
     {
         links.push_back({_linkId++, start_attr, end_attr});
     }
-
-    // Handle new node creation
-    if (ImGui::Button("Add Color Node"))
-    {
-        Node newNode;
-        newNode.id = _nodeId++;
-        newNode.color = ImVec4(0.5f, 0.5f, 0.5f, 1.0f);
-        newNode.input_attr = newNode.id << 1;
-        newNode.output_attr = newNode.id << 2;
-        nodes.push_back(newNode);
-    }
+    printf("start =%d ,  end = %d  node_hovered = %d\n", start_attr, end_attr, node_hovered);
 
     ImNodes::EndNodeEditor();
     ImGui::End();
