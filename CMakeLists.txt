@@ -22,7 +22,6 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/output/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/output/bin)
 
 set(VCPKG_LIB_NAMES
-    glew
     glad
     glfw3
 )
@@ -51,7 +50,7 @@ find_package(glad CONFIG REQUIRED)
 
 # find_package(imgui CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
-find_package(glew REQUIRED)
+find_package(OpenGL REQUIRED)
 
 include(cmake/update_modules.cmake)
 include(cmake/loadLibraries.cmake)

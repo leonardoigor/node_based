@@ -1,20 +1,13 @@
-#include "imgui.h"
-#include "imnodes.h"
-#include <vector>
-#include <string>
+#include "Editor.h"
 
-// Estrutura básica do nó
-struct Node
-{
-    int id;
-    ImVec4 color;
-    int input_attr, output_attr;
-};
-
+// Global containers for nodes and links
 std::vector<Node> nodes;
-int nodeId = 1;
+std::vector<Link> links;
 
-void RenderColorNode(Node &node)
+int _nodeId = 1;
+int _linkId = 1;
+
+void RenderColorNodeMain(Node &node)
 {
     ImNodes::BeginNode(node.id);
 
@@ -35,23 +28,36 @@ void RenderColorNode(Node &node)
     ImNodes::EndNode();
 }
 
-void RenderEditor()
+void RenderEditorMain()
 {
     ImGui::Begin("Node Editor");
 
     ImNodes::BeginNodeEditor();
 
-    // Renderizar todos os nós
+    // Render all nodes
     for (auto &node : nodes)
     {
-        RenderColorNode(node);
+        RenderColorNodeMain(node);
     }
 
-    // Criar novos nós
+    // Render all links
+    for (auto &link : links)
+    {
+        ImNodes::Link(link.id, link.start_attr, link.end_attr);
+    }
+
+    // Handle new link creation
+    int start_attr, end_attr;
+    if (ImNodes::IsLinkCreated(&start_attr, &end_attr))
+    {
+        links.push_back({_linkId++, start_attr, end_attr});
+    }
+
+    // Handle new node creation
     if (ImGui::Button("Add Color Node"))
     {
         Node newNode;
-        newNode.id = nodeId++;
+        newNode.id = _nodeId++;
         newNode.color = ImVec4(0.5f, 0.5f, 0.5f, 1.0f);
         newNode.input_attr = newNode.id << 1;
         newNode.output_attr = newNode.id << 2;

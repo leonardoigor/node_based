@@ -1,14 +1,14 @@
-#include <GL/glew.h>
 #include "imgui.h"
+#include <GL/glew.h>
 #include "imnodes.h"
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
 #include <GLFW/glfw3.h>
-#include "Editor.cpp"
+#include "Editor.h"
 
 static void glfw_error_callback(int error, const char *description)
 {
-    fprintf(stderr, "Glfw Error %d: %s\n", error, description);
+    // fprintf(stderr, "Glfw Error %d: %s\n", error, description);
 }
 
 int main(int, char **)
@@ -29,7 +29,7 @@ int main(int, char **)
     // Inicialização do OpenGL
     if (glewInit() != GLEW_OK)
     {
-        fprintf(stderr, "Failed to initialize OpenGL loader!\n");
+        // fprintf(stderr, "Failed to initialize OpenGL loader!\n");
         return -1;
     }
 
@@ -58,7 +58,7 @@ int main(int, char **)
         ImGui::NewFrame();
 
         // Renderização do editor de nós
-        RenderEditor();
+        RenderEditorMain();
 
         // Renderização do ImGui
         ImGui::Render();
